@@ -3,7 +3,7 @@
  * Cache First assets, Network First datos
  */
 
-const CACHE_NAME = 'bitacora-v3';
+const CACHE_NAME = 'bitacora-v4';
 
 const ASSETS_TO_CACHE = [
   './',
@@ -12,6 +12,7 @@ const ASSETS_TO_CACHE = [
   './db.js',
   './styles.css',
   './manifest.json',
+  'https://unpkg.com/lucide@latest',
   'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2',
   'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
   'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap'
