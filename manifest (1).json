@@ -1,0 +1,27 @@
+{
+  "name": "Bitácora Digital Construrike",
+  "short_name": "Bitácora",
+  "description": "Registro digital de bitácora de obra con fotos, GPS y datos de avance. Construrike.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#0f172a",
+  "background_color": "#0f172a",
+  "lang": "es-MX",
+  "categories": ["business", "productivity"],
+  "icons": [
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 192 192'%3E%3Crect width='192' height='192' rx='40' fill='%230f172a'/%3E%3Crect x='16' y='16' width='160' height='160' rx='28' fill='%231e293b' stroke='%232563eb' stroke-width='2'/%3E%3Ctext x='96' y='115' font-size='80' text-anchor='middle' fill='%232563eb' font-family='system-ui,sans-serif' font-weight='800'%3EB%3C/text%3E%3Crect x='40' y='135' width='112' height='3' rx='1.5' fill='%23f59e0b'/%3E%3C/svg%3E",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'%3E%3Crect width='512' height='512' rx='108' fill='%230f172a'/%3E%3Crect x='40' y='40' width='432' height='432' rx='76' fill='%231e293b' stroke='%232563eb' stroke-width='4'/%3E%3Ctext x='256' y='305' font-size='220' text-anchor='middle' fill='%232563eb' font-family='system-ui,sans-serif' font-weight='800'%3EB%3C/text%3E%3Crect x='110' y='370' width='292' height='8' rx='4' fill='%23f59e0b'/%3E%3C/svg%3E",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}

@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#0a0f1a">
+  <meta name="description" content="Bitácora Digital de Obra — Construrike">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Bitácora">
+  <title>Bitácora Digital — Construrike</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- PANTALLA 1: SETUP INICIAL (primera vez) -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div id="screen-setup" class="app-screen hidden">
+    <div class="auth-container">
+      <div class="auth-card">
+        <div class="auth-logo">B</div>
+        <h1 class="auth-title">Bitácora Digital</h1>
+        <p class="auth-subtitle">Primera vez — crea un PIN administrativo</p>
+
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <input type="password" id="setup-pin" class="auth-input" placeholder="PIN" maxlength="8" inputmode="numeric" autocomplete="new-password">
+          <input type="password" id="setup-pin-confirm" class="auth-input" placeholder="Confirmar" maxlength="8" inputmode="numeric" autocomplete="new-password">
+          <p id="setup-error" class="auth-error hidden"></p>
+          <button id="btn-setup-pin" class="btn-primary" style="margin-top:8px;">🔐 Crear PIN</button>
+        </div>
+
+        <p style="text-align:center; font-size:11px; color:#64748b; margin-top:16px;">
+          Este PIN protege la creación y edición de registros.<br>
+          Los visitantes pueden ver y descargar sin PIN.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- PANTALLA 2: LOGIN -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div id="screen-login" class="app-screen hidden">
+    <div class="auth-container">
+      <div class="auth-card">
+        <div class="auth-logo">B</div>
+        <h1 class="auth-title">Bitácora Digital</h1>
+        <p class="auth-subtitle">Construrike</p>
+
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <input type="password" id="login-pin" class="auth-input" placeholder="PIN" maxlength="8" inputmode="numeric" autocomplete="current-password">
+          <p id="login-error" class="auth-error hidden"></p>
+          <button id="btn-login-pin" class="btn-primary">🔓 Ingresar como Residente</button>
+          <button id="btn-enter-viewer" class="btn-secondary">👁️ Solo ver registros</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- PANTALLA 3: PRINCIPAL -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div id="screen-main" class="app-screen hidden">
+
+    <!-- HEADER -->
+    <header class="app-header">
+      <div style="max-width:480px; margin:0 auto; padding:0 16px; height:56px; display:flex; align-items:center; justify-content:space-between;">
+        <div style="display:flex; align-items:center; gap:10px;">
+          <div style="width:34px; height:34px; border-radius:10px; background:linear-gradient(135deg,#1e40af,#2563eb); display:flex; align-items:center; justify-content:center; color:white; font-weight:800; font-size:14px;">B</div>
+          <div>
+            <div style="font-size:14px; font-weight:700; color:white; line-height:1.2;">Bitácora Digital</div>
+            <div style="font-size:10px; color:#64748b; line-height:1.2;">Construrike</div>
+          </div>
+        </div>
+        <div style="display:flex; align-items:center; gap:6px;">
+          <button id="btn-sync" class="header-action admin-only hidden" title="Sincronizar">☁️</button>
+          <button id="btn-open-config" class="header-action admin-only hidden" title="Configuración">⚙️</button>
+          <button id="btn-logout" class="header-action" title="Salir">🚪</button>
+          <div style="position:relative;">
+            <span style="font-size:12px; color:#64748b;">📋</span>
+            <span id="pending-badge" class="hidden" style="position:absolute; top:-4px; right:-6px; min-width:15px; height:15px; display:flex; align-items:center; justify-content:center; padding:0 4px; border-radius:10px; background:#f59e0b; font-size:9px; font-weight:800; color:#0f172a;">0</span>
+          </div>
+          <div id="online-indicator" class="connectivity-badge online">
+            <span id="online-dot" class="indicator-dot online"></span>
+            <span id="online-text">Online</span>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Banner obra -->
+    <div class="config-banner">
+      <div style="max-width:480px; margin:0 auto; display:flex; align-items:center; justify-content:space-between;">
+        <div style="font-size:12px; color:#94a3b8; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;">
+          🏗️ <span id="banner-obra" style="font-weight:600; color:#cbd5e1;">Sin obra configurada</span>
+          <span style="color:#475569; margin:0 4px;">·</span>
+          👷 <span id="banner-residente" style="color:#94a3b8;"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Contenido -->
+    <main style="padding-top:100px; padding-bottom:96px; max-width:480px; margin:0 auto; padding-left:16px; padding-right:16px; position:relative; z-index:1;">
+
+      <!-- Banner modo visitante -->
+      <div id="viewer-banner" class="viewer-banner hidden">
+        👁️ Modo solo lectura — puedes ver y descargar registros
+      </div>
+
+      <!-- Filtros -->
+      <div style="margin-bottom:16px; display:flex; flex-direction:column; gap:8px;">
+        <div style="display:flex; gap:8px;">
+          <input type="text" id="filter-search" placeholder="🔍 Buscar..." class="filter-input" style="flex:1;">
+          <input type="date" id="filter-date" class="filter-input" style="width:auto;">
+        </div>
+        <div style="display:flex; align-items:center; justify-content:space-between;">
+          <span id="record-count" style="font-size:12px; color:#64748b;">0 registros</span>
+          <div style="display:flex; gap:6px;">
+            <button id="btn-export-csv" class="export-btn">📊 CSV</button>
+            <button id="btn-export-pdf" class="export-btn">📄 PDF</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lista de registros -->
+      <div id="records-list" style="display:flex; flex-direction:column; gap:10px;"></div>
+
+      <!-- Estado vacío -->
+      <div id="empty-state" style="text-align:center; padding:60px 0;">
+        <div style="font-size:48px; opacity:0.2; margin-bottom:12px;">📋</div>
+        <p style="color:#64748b; font-size:13px;">Sin registros todavía</p>
+        <p style="color:#475569; font-size:11px; margin-top:4px;">Presiona + Nuevo Registro para comenzar</p>
+      </div>
+    </main>
+
+    <!-- FAB -->
+    <button id="btn-new-record" class="fab-btn admin-only hidden">
+      <span style="font-size:18px;">+</span>
+      <span>Nuevo Registro</span>
+    </button>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- MODAL: CONFIGURACIÓN -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div id="modal-config" class="modal-overlay hidden" style="display:none; align-items:flex-end; justify-content:center;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 style="font-size:15px; font-weight:700; color:white;">⚙️ Configuración de Obra</h2>
+        <button id="btn-close-config" class="modal-close">✕</button>
+      </div>
+      <div style="padding:20px; display:flex; flex-direction:column; gap:16px;">
+        <p style="font-size:12px; color:#64748b;">Se aplica automáticamente a todos los registros nuevos.</p>
+        <div>
+          <label for="config-obra" class="field-label">🏗️ Nombre de la obra</label>
+          <input type="text" id="config-obra" class="field-input" placeholder="Ej: Puente vehicular Km 42">
+        </div>
+        <div>
+          <label for="config-residente" class="field-label">👷 Nombre del residente</label>
+          <input type="text" id="config-residente" class="field-input" placeholder="Ej: Ing. Juan Pérez">
+        </div>
+        <button id="btn-save-config" class="btn-primary">💾 Guardar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- MODAL: NUEVO REGISTRO -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div id="modal-record-form" class="modal-overlay hidden" style="display:none; align-items:flex-end; justify-content:center;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 style="font-size:15px; font-weight:700; color:white;">Nuevo Registro</h2>
+        <button id="btn-close-modal" class="modal-close">✕</button>
+      </div>
+      <div style="padding:20px; display:flex; flex-direction:column; gap:18px;">
+
+        <!-- FOTOS -->
+        <div>
+          <label class="field-label">📷 Fotos (mín. 1 obligatoria)</label>
+          <div class="photo-strip">
+            <button id="btn-take-photo" type="button" class="photo-capture-btn">
+              📷
+              <span>Tomar</span>
+            </button>
+          </div>
+          <div id="photos-strip" class="photo-strip" style="margin-top:8px;"></div>
+          <p id="photo-count" style="font-size:12px; color:#64748b; margin-top:6px;">Sin fotos</p>
+        </div>
+
+        <!-- TIMESTAMP -->
+        <div>
+          <label class="field-label">🕒 Fecha y hora (automática)</label>
+          <div class="field-input field-readonly">
+            <span id="display-timestamp">—</span>
+          </div>
+        </div>
+
+        <!-- GPS -->
+        <div>
+          <label class="field-label">📍 GPS (automático)</label>
+          <div class="field-input field-readonly">
+            <span id="display-gps">Obteniendo...</span>
+            <div id="gps-status" style="font-size:11px; color:#f59e0b; margin-top:4px;">⏳ Localizando...</div>
+          </div>
+        </div>
+
+        <!-- DESCRIPCIÓN -->
+        <div>
+          <label for="field-description" class="field-label">📝 Descripción (mín. 20 caracteres)</label>
+          <textarea id="field-description" rows="3" maxlength="500" class="field-input" style="resize:none;"
+            placeholder="Ej: Colado de cimentación eje A con concreto f'c=250 kg/cm²"></textarea>
+          <p id="desc-counter" style="font-size:11px; color:#64748b; margin-top:4px;">0/20 mín.</p>
+        </div>
+
+        <!-- CLIMA + CONECTIVIDAD -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div>
+            <label for="field-clima" class="field-label">🌤️ Clima</label>
+            <select id="field-clima" class="field-input">
+              <option value="Bueno">☀️ Bueno</option>
+              <option value="Moderado">⛅ Moderado</option>
+              <option value="Malo">🌧️ Malo</option>
+            </select>
+          </div>
+          <div>
+            <label for="field-conectividad" class="field-label">📶 Conectividad</label>
+            <select id="field-conectividad" class="field-input">
+              <option value="Buena">Buena</option>
+              <option value="Media">Media</option>
+              <option value="Baja">Baja</option>
+              <option value="Sin señal">Sin señal</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- PERSONAL + VOLÚMENES -->
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div>
+            <label for="field-personal" class="field-label">👷 Personal en obra</label>
+            <input type="number" id="field-personal" class="field-input" min="0" step="1" placeholder="Ej: 12">
+          </div>
+          <div>
+            <label for="field-volumenes" class="field-label">📐 Volúmenes (m³)</label>
+            <input type="number" id="field-volumenes" class="field-input" step="0.01" min="0" placeholder="Ej: 12.5">
+          </div>
+        </div>
+
+        <!-- MAQUINARIA -->
+        <div>
+          <label for="field-maquinaria" class="field-label">🚜 Maquinaria / equipo (opcional)</label>
+          <input type="text" id="field-maquinaria" class="field-input" maxlength="200" placeholder="Ej: Retroexcavadora CAT 420F">
+        </div>
+
+        <!-- TIPO -->
+        <div>
+          <label for="field-tipo" class="field-label">🏷️ Tipo de evento</label>
+          <select id="field-tipo" class="field-input">
+            <option value="Normal">Normal</option>
+            <option value="Incidencia">Incidencia</option>
+            <option value="Hito">Hito</option>
+          </select>
+        </div>
+
+        <!-- GUARDAR -->
+        <button id="btn-save-record" class="btn-save" disabled>✅ Guardar Registro</button>
+        <p style="text-align:center; font-size:10px; color:#475569;">Foto, GPS y descripción son obligatorios</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- MODAL: DETALLE -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div id="modal-detail" class="modal-overlay hidden" style="display:none; align-items:center; justify-content:center;">
+    <div class="modal-content" style="margin:16px; border-radius:24px; max-height:90vh;">
+      <div class="modal-header">
+        <h2 style="font-size:15px; font-weight:700; color:white;">Detalle del Registro</h2>
+        <button id="btn-close-detail" class="modal-close">✕</button>
+      </div>
+      <div style="padding:20px;">
+        <!-- Galería de fotos -->
+        <div id="detail-gallery" class="detail-gallery"></div>
+
+        <!-- Datos -->
+        <div>
+          <div class="detail-row"><span class="detail-label">🕒 Fecha</span><span id="detail-timestamp" class="detail-value"></span></div>
+          <div class="detail-row"><span class="detail-label">📍 GPS</span><span id="detail-gps" class="detail-value"></span></div>
+          <div class="detail-row"><span class="detail-label">🏗️ Obra</span><span id="detail-obra" class="detail-value"></span></div>
+          <div class="detail-row"><span class="detail-label">👷 Residente</span><span id="detail-residente" class="detail-value"></span></div>
+          <div class="detail-row"><span class="detail-label">📝 Descripción</span><span id="detail-description" class="detail-value"></span></div>
+          <div class="detail-row"><span class="detail-label">🌤️ Clima</span><span id="detail-clima" class="detail-value"></span></div>
+          <div class="detail-row"><span class="detail-label">📶 Conectividad</span><span id="detail-conectividad" class="detail-value"></span></div>
+          <div class="detail-row"><span class="detail-label">👷 Personal</span><span id="detail-personal" class="detail-value"></span></div>
+          <div class="detail-row"><span class="detail-label">📐 Volúmenes</span><span id="detail-volumenes" class="detail-value"></span></div>
+          <div class="detail-row"><span class="detail-label">🚜 Maquinaria</span><span id="detail-maquinaria" class="detail-value"></span></div>
+          <div class="detail-row"><span class="detail-label">🏷️ Tipo</span><span id="detail-tipo" class="detail-value"></span></div>
+          <div class="detail-row" style="border:none;"><span class="detail-label">☁️ Estado</span><span id="detail-sync" class="detail-value"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST CONTAINER -->
+  <div id="toast-container"></div>
+
+  <!-- SCRIPTS -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="db.js"></script>
+  <script src="app.js"></script>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(r => console.log('[SW] Registrado:', r.scope))
+          .catch(e => console.error('[SW] Error:', e));
+      });
+    }
+  </script>
+</body>
+</html>
