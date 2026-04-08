@@ -14,7 +14,7 @@
 </head>
 <body>
 
-  <!-- ══════════ PANTALLA: SETUP PIN ══════════ -->
+  <!-- ══════════ SETUP PIN ══════════ -->
   <div id="screen-setup" class="app-screen hidden">
     <div class="auth-container">
       <div class="auth-card">
@@ -22,17 +22,17 @@
         <h1 class="auth-title">Bitácora Digital</h1>
         <p class="auth-subtitle">Primera vez — crea un PIN administrativo</p>
         <div class="auth-form">
-          <input type="password" id="setup-pin" class="auth-input" placeholder="PIN" maxlength="8" inputmode="numeric" autocomplete="new-password">
-          <input type="password" id="setup-pin-confirm" class="auth-input" placeholder="Confirmar" maxlength="8" inputmode="numeric" autocomplete="new-password">
+          <input type="password" id="setup-pin" class="auth-input" placeholder="PIN" maxlength="8" inputmode="numeric">
+          <input type="password" id="setup-pin-confirm" class="auth-input" placeholder="Confirmar" maxlength="8" inputmode="numeric">
           <p id="setup-error" class="auth-error hidden"></p>
-          <button id="btn-setup-pin" class="btn-primary" style="margin-top:8px;">🔐 Crear PIN</button>
+          <button id="btn-setup-pin" class="btn-primary" style="margin-top:8px;"><i data-lucide="lock" class="icon"></i> Crear PIN</button>
         </div>
-        <p class="auth-hint">Este PIN protege la creación y edición de registros.<br>Los visitantes pueden ver y descargar sin PIN.</p>
+        <p class="auth-hint">Este PIN protege la creación y edición de registros. Los visitantes pueden ver y descargar sin PIN.</p>
       </div>
     </div>
   </div>
 
-  <!-- ══════════ PANTALLA: LOGIN ══════════ -->
+  <!-- ══════════ LOGIN ══════════ -->
   <div id="screen-login" class="app-screen hidden">
     <div class="auth-container">
       <div class="auth-card">
@@ -40,19 +40,18 @@
         <h1 class="auth-title">Bitácora Digital</h1>
         <p class="auth-subtitle">Construrike</p>
         <div class="auth-form">
-          <input type="password" id="login-pin" class="auth-input" placeholder="PIN" maxlength="8" inputmode="numeric" autocomplete="current-password">
+          <input type="password" id="login-pin" class="auth-input" placeholder="PIN" maxlength="8" inputmode="numeric">
           <p id="login-error" class="auth-error hidden"></p>
-          <button id="btn-login-pin" class="btn-primary">🔓 Ingresar como Residente</button>
-          <button id="btn-enter-viewer" class="btn-secondary">👁️ Solo ver registros</button>
+          <button id="btn-login-pin" class="btn-primary"><i data-lucide="unlock" class="icon"></i> Ingresar como Residente</button>
+          <button id="btn-enter-viewer" class="btn-secondary"><i data-lucide="eye" class="icon"></i> Solo ver registros</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- ══════════ PANTALLA: PRINCIPAL ══════════ -->
+  <!-- ══════════ PRINCIPAL ══════════ -->
   <div id="screen-main" class="app-screen hidden">
 
-    <!-- Header -->
     <header class="app-header">
       <div class="header-inner">
         <div class="header-brand">
@@ -63,11 +62,11 @@
           </div>
         </div>
         <div class="header-actions">
-          <button id="btn-sync" class="header-action admin-only hidden" title="Sincronizar">☁️</button>
-          <button id="btn-open-config" class="header-action admin-only hidden" title="Configuración">⚙️</button>
-          <button id="btn-logout" class="header-action" title="Salir">🚪</button>
+          <button id="btn-sync" class="header-action admin-only hidden" title="Sincronizar"><i data-lucide="cloud-upload" class="icon"></i></button>
+          <button id="btn-open-config" class="header-action admin-only hidden" title="Configuración"><i data-lucide="settings" class="icon"></i></button>
+          <button id="btn-logout" class="header-action" title="Salir"><i data-lucide="log-out" class="icon"></i></button>
           <div class="pending-wrap">
-            <span class="pending-icon">📋</span>
+            <i data-lucide="clipboard-list" class="icon" style="color:#64748b"></i>
             <span id="pending-badge" class="pending-badge hidden">0</span>
           </div>
           <div id="online-indicator" class="connectivity-badge online">
@@ -78,74 +77,69 @@
       </div>
     </header>
 
-    <!-- Banner obra -->
     <div class="config-banner">
       <div class="config-banner-inner">
-        🏗️ <span id="banner-obra" class="obra">Sin obra configurada</span>
+        <i data-lucide="building-2" class="icon-sm" style="color:#64748b"></i>
+        <span id="banner-obra" class="obra">Sin obra configurada</span>
         <span class="sep">·</span>
-        👷 <span id="banner-residente"></span>
+        <i data-lucide="hard-hat" class="icon-sm" style="color:#64748b"></i>
+        <span id="banner-residente"></span>
       </div>
     </div>
 
-    <!-- Contenido -->
     <main class="main-content">
 
-      <!-- Banner visitante -->
       <div id="viewer-banner" class="viewer-banner hidden">
-        👁️ Modo solo lectura — puedes ver y descargar registros
+        <i data-lucide="eye" class="icon-sm"></i> Modo solo lectura — puedes ver y descargar registros
       </div>
 
-      <!-- Filtros -->
       <div class="filters">
         <div class="filters-row">
-          <input type="text" id="filter-search" placeholder="🔍 Buscar..." class="filter-input filter-search">
+          <input type="text" id="filter-search" placeholder="Buscar registros..." class="filter-input filter-search">
           <input type="date" id="filter-date" class="filter-input">
         </div>
         <div class="filters-meta">
           <span id="record-count" class="record-count">0 registros</span>
           <div class="export-buttons">
-            <button id="btn-export-csv" class="export-btn">📊 CSV</button>
-            <button id="btn-export-pdf" class="export-btn">📄 PDF</button>
+            <button id="btn-export-csv" class="export-btn"><i data-lucide="table" class="icon-sm"></i> CSV</button>
+            <button id="btn-export-pdf" class="export-btn"><i data-lucide="file-down" class="icon-sm"></i> PDF</button>
           </div>
         </div>
       </div>
 
-      <!-- Lista de registros -->
       <div id="records-list" class="records-list"></div>
 
-      <!-- Estado vacío -->
       <div id="empty-state" class="empty-state">
-        <div class="empty-icon">📋</div>
+        <i data-lucide="clipboard-list" class="icon" style="width:48px;height:48px;color:#334155;margin:0 auto 12px;display:block;"></i>
         <p class="empty-title">Sin registros todavía</p>
         <p class="empty-sub">Presiona + Nuevo Registro para comenzar</p>
       </div>
     </main>
 
-    <!-- FAB -->
     <button id="btn-new-record" class="fab-btn admin-only hidden">
-      <span style="font-size:18px;">+</span>
+      <i data-lucide="plus" class="icon"></i>
       <span>Nuevo Registro</span>
     </button>
   </div>
 
-  <!-- ══════════ MODAL: CONFIGURACIÓN ══════════ -->
+  <!-- ══════════ MODAL: CONFIG ══════════ -->
   <div id="modal-config" class="modal-overlay">
     <div class="modal-content">
       <div class="modal-header">
-        <span class="modal-title">⚙️ Configuración de Obra</span>
-        <button class="modal-close" data-close="modal-config">✕</button>
+        <span class="modal-title">Configuración de Obra</span>
+        <button class="modal-close" data-close="modal-config"><i data-lucide="x" class="icon"></i></button>
       </div>
       <div class="modal-body modal-body-config">
         <p class="field-hint">Se aplica automáticamente a todos los registros nuevos.</p>
         <div>
-          <label for="config-obra" class="field-label">🏗️ Nombre de la obra</label>
+          <label for="config-obra" class="field-label"><i data-lucide="building-2" class="icon-sm"></i> Nombre de la obra</label>
           <input type="text" id="config-obra" class="field-input" placeholder="Ej: Puente vehicular Km 42">
         </div>
         <div>
-          <label for="config-residente" class="field-label">👷 Nombre del residente</label>
+          <label for="config-residente" class="field-label"><i data-lucide="hard-hat" class="icon-sm"></i> Nombre del residente</label>
           <input type="text" id="config-residente" class="field-input" placeholder="Ej: Ing. Juan Pérez">
         </div>
-        <button id="btn-save-config" class="btn-primary">💾 Guardar</button>
+        <button id="btn-save-config" class="btn-primary"><i data-lucide="save" class="icon"></i> Guardar</button>
       </div>
     </div>
   </div>
@@ -155,53 +149,47 @@
     <div class="modal-content">
       <div class="modal-header">
         <span class="modal-title">Nuevo Registro</span>
-        <button class="modal-close" data-close="modal-record-form">✕</button>
+        <button class="modal-close" data-close="modal-record-form"><i data-lucide="x" class="icon"></i></button>
       </div>
       <div class="modal-body modal-body-form">
 
-        <!-- FOTOS -->
         <div class="photo-section">
-          <label class="field-label">📷 Fotos (mínimo 1)</label>
-          <button id="btn-take-photo" type="button" class="photo-capture-btn">📷 Tomar Foto</button>
+          <label class="field-label"><i data-lucide="camera" class="icon-sm"></i> Fotos (mínimo 1)</label>
+          <button id="btn-take-photo" type="button" class="photo-capture-btn"><i data-lucide="camera" class="icon"></i> Tomar Foto</button>
           <div id="photos-strip" class="photo-strip"></div>
           <span id="photo-count" class="photo-count">Sin fotos</span>
         </div>
 
-        <!-- TIMESTAMP -->
         <div>
-          <label class="field-label">🕒 Fecha y hora (automática)</label>
+          <label class="field-label"><i data-lucide="clock" class="icon-sm"></i> Fecha y hora (automática)</label>
           <div class="field-input field-readonly" id="display-timestamp">—</div>
         </div>
 
-        <!-- GPS -->
         <div>
-          <label class="field-label">📍 GPS (automático)</label>
+          <label class="field-label"><i data-lucide="map-pin" class="icon-sm"></i> GPS (automático)</label>
           <div class="field-input field-readonly">
             <div id="display-gps">Obteniendo...</div>
-            <div id="gps-status" class="field-hint warning animate-pulse">⏳ Localizando...</div>
+            <div id="gps-status" class="field-hint warning animate-pulse">Localizando...</div>
           </div>
         </div>
 
-        <!-- DESCRIPCIÓN -->
         <div>
-          <label for="field-description" class="field-label">📝 Descripción (mín. 20 caracteres)</label>
-          <textarea id="field-description" rows="3" maxlength="500" class="field-input"
-            placeholder="Ej: Colado de cimentación eje A con concreto f'c=250 kg/cm²"></textarea>
+          <label for="field-description" class="field-label"><i data-lucide="file-text" class="icon-sm"></i> Descripción (mín. 20 caracteres)</label>
+          <textarea id="field-description" rows="3" maxlength="500" class="field-input" placeholder="Ej: Colado de cimentación eje A con concreto f'c=250 kg/cm²"></textarea>
           <span id="desc-counter" class="field-hint">0/20 mín.</span>
         </div>
 
-        <!-- CLIMA + CONECTIVIDAD -->
         <div class="field-row">
           <div>
-            <label for="field-clima" class="field-label">🌤️ Clima</label>
+            <label for="field-clima" class="field-label"><i data-lucide="sun" class="icon-sm"></i> Clima</label>
             <select id="field-clima" class="field-input">
-              <option value="Bueno">☀️ Bueno</option>
-              <option value="Moderado">⛅ Moderado</option>
-              <option value="Malo">🌧️ Malo</option>
+              <option value="Bueno">Bueno</option>
+              <option value="Moderado">Moderado</option>
+              <option value="Malo">Malo</option>
             </select>
           </div>
           <div>
-            <label for="field-conectividad" class="field-label">📶 Conectividad</label>
+            <label for="field-conectividad" class="field-label"><i data-lucide="signal" class="icon-sm"></i> Conectividad</label>
             <select id="field-conectividad" class="field-input">
               <option value="Buena">Buena</option>
               <option value="Media">Media</option>
@@ -211,27 +199,24 @@
           </div>
         </div>
 
-        <!-- PERSONAL + VOLÚMENES -->
         <div class="field-row">
           <div>
-            <label for="field-personal" class="field-label">👷 Personal en obra</label>
+            <label for="field-personal" class="field-label"><i data-lucide="users" class="icon-sm"></i> Personal en obra</label>
             <input type="number" id="field-personal" class="field-input" min="0" step="1" placeholder="Ej: 12">
           </div>
           <div>
-            <label for="field-volumenes" class="field-label">📐 Volúmenes (m³)</label>
+            <label for="field-volumenes" class="field-label"><i data-lucide="ruler" class="icon-sm"></i> Volúmenes (m³)</label>
             <input type="number" id="field-volumenes" class="field-input" step="0.01" min="0" placeholder="Ej: 12.5">
           </div>
         </div>
 
-        <!-- MAQUINARIA -->
         <div>
-          <label for="field-maquinaria" class="field-label">🚜 Maquinaria / equipo (opcional)</label>
+          <label for="field-maquinaria" class="field-label"><i data-lucide="truck" class="icon-sm"></i> Maquinaria / equipo (opcional)</label>
           <input type="text" id="field-maquinaria" class="field-input" maxlength="200" placeholder="Ej: Retroexcavadora CAT 420F">
         </div>
 
-        <!-- TIPO -->
         <div>
-          <label for="field-tipo" class="field-label">🏷️ Tipo de evento</label>
+          <label for="field-tipo" class="field-label"><i data-lucide="tag" class="icon-sm"></i> Tipo de evento</label>
           <select id="field-tipo" class="field-input">
             <option value="Normal">Normal</option>
             <option value="Incidencia">Incidencia</option>
@@ -239,8 +224,7 @@
           </select>
         </div>
 
-        <!-- GUARDAR -->
-        <button id="btn-save-record" class="btn-save" disabled>✅ Guardar Registro</button>
+        <button id="btn-save-record" class="btn-save" disabled><i data-lucide="check-circle" class="icon"></i> Guardar Registro</button>
         <p class="form-bottom-hint">Foto, GPS y descripción son obligatorios</p>
       </div>
     </div>
@@ -251,41 +235,43 @@
     <div class="modal-content" style="margin:16px; border-radius:24px; max-height:90vh;">
       <div class="modal-header">
         <span class="modal-title">Detalle del Registro</span>
-        <button class="modal-close" data-close="modal-detail">✕</button>
+        <button class="modal-close" data-close="modal-detail"><i data-lucide="x" class="icon"></i></button>
       </div>
       <div class="modal-body">
         <div id="detail-gallery" class="detail-gallery"></div>
         <div class="detail-rows">
-          <div class="detail-row"><span class="detail-label">🕒 Fecha</span><span id="detail-timestamp" class="detail-value"></span></div>
-          <div class="detail-row"><span class="detail-label">📍 GPS</span><span id="detail-gps" class="detail-value"></span></div>
-          <div class="detail-row"><span class="detail-label">🏗️ Obra</span><span id="detail-obra" class="detail-value"></span></div>
-          <div class="detail-row"><span class="detail-label">👷 Residente</span><span id="detail-residente" class="detail-value"></span></div>
-          <div class="detail-row"><span class="detail-label">📝 Descripción</span><span id="detail-description" class="detail-value"></span></div>
-          <div class="detail-row"><span class="detail-label">🌤️ Clima</span><span id="detail-clima" class="detail-value"></span></div>
-          <div class="detail-row"><span class="detail-label">📶 Conectividad</span><span id="detail-conectividad" class="detail-value"></span></div>
-          <div class="detail-row"><span class="detail-label">👷 Personal</span><span id="detail-personal" class="detail-value"></span></div>
-          <div class="detail-row"><span class="detail-label">📐 Volúmenes</span><span id="detail-volumenes" class="detail-value"></span></div>
-          <div class="detail-row"><span class="detail-label">🚜 Maquinaria</span><span id="detail-maquinaria" class="detail-value"></span></div>
-          <div class="detail-row"><span class="detail-label">🏷️ Tipo</span><span id="detail-tipo" class="detail-value"></span></div>
-          <div class="detail-row"><span class="detail-label">☁️ Estado</span><span id="detail-sync" class="detail-value"></span></div>
+          <div class="detail-row"><span class="detail-label"><i data-lucide="clock" class="icon-sm"></i> Fecha</span><span id="detail-timestamp" class="detail-value"></span></div>
+          <div class="detail-row"><span class="detail-label"><i data-lucide="map-pin" class="icon-sm"></i> GPS</span><span id="detail-gps" class="detail-value"></span></div>
+          <div class="detail-row"><span class="detail-label"><i data-lucide="building-2" class="icon-sm"></i> Obra</span><span id="detail-obra" class="detail-value"></span></div>
+          <div class="detail-row"><span class="detail-label"><i data-lucide="hard-hat" class="icon-sm"></i> Residente</span><span id="detail-residente" class="detail-value"></span></div>
+          <div class="detail-row"><span class="detail-label"><i data-lucide="file-text" class="icon-sm"></i> Descripción</span><span id="detail-description" class="detail-value"></span></div>
+          <div class="detail-row"><span class="detail-label"><i data-lucide="sun" class="icon-sm"></i> Clima</span><span id="detail-clima" class="detail-value"></span></div>
+          <div class="detail-row"><span class="detail-label"><i data-lucide="signal" class="icon-sm"></i> Conectividad</span><span id="detail-conectividad" class="detail-value"></span></div>
+          <div class="detail-row"><span class="detail-label"><i data-lucide="users" class="icon-sm"></i> Personal</span><span id="detail-personal" class="detail-value"></span></div>
+          <div class="detail-row"><span class="detail-label"><i data-lucide="ruler" class="icon-sm"></i> Volúmenes</span><span id="detail-volumenes" class="detail-value"></span></div>
+          <div class="detail-row"><span class="detail-label"><i data-lucide="truck" class="icon-sm"></i> Maquinaria</span><span id="detail-maquinaria" class="detail-value"></span></div>
+          <div class="detail-row"><span class="detail-label"><i data-lucide="tag" class="icon-sm"></i> Tipo</span><span id="detail-tipo" class="detail-value"></span></div>
+          <div class="detail-row"><span class="detail-label"><i data-lucide="cloud" class="icon-sm"></i> Estado</span><span id="detail-sync" class="detail-value"></span></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- TOASTS -->
   <div id="toast-container"></div>
 
-  <!-- SCRIPTS -->
+  <script src="https://unpkg.com/lucide@latest"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="db.js"></script>
   <script src="app.js"></script>
   <script>
+    // Inicializar íconos Lucide
+    lucide.createIcons();
+
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
+      window.addEventListener('load', function() {
         navigator.serviceWorker.register('./sw.js')
-          .then(r => console.log('[SW] Registrado:', r.scope))
-          .catch(e => console.error('[SW] Error:', e));
+          .then(function(r) { console.log('[SW] Registrado:', r.scope); })
+          .catch(function(e) { console.error('[SW] Error:', e); });
       });
     }
   </script>
