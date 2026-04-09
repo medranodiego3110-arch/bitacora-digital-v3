@@ -3,7 +3,7 @@
  * Cache First assets, Network First datos
  */
 
-const CACHE_NAME = 'bitacora-v6';
+const CACHE_NAME = 'bitacora-v7';
 
 const ASSETS_TO_CACHE = [
   './',
