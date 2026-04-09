@@ -32,7 +32,31 @@ async function initApp() {
     updateOnlineIndicator();
 
     var pinHash = await localDB.getConfig('pinHash');
-    showScreen(pinHash ? 'screen-login' : 'screen-setup');
+
+    // Si no hay PIN local, buscar en Supabase (otro dispositivo pudo haberlo creado)
+    if (!pinHash && cloud.isAvailable()) {
+      try {
+        var cloudPin = await cloud.getConfig('pinHash');
+        if (cloudPin) {
+          pinHash = cloudPin;
+          await localDB.setConfig('pinHash', cloudPin);
+          console.log('[APP] PIN recuperado desde la nube');
+        }
+      } catch (err) {
+        console.warn('[APP] No se pudo verificar PIN en la nube:', err);
+      }
+    }
+
+    var savedSession = await localDB.getConfig('session');
+
+    if (!pinHash) {
+      showScreen('screen-setup');
+    } else if (savedSession === 'admin') {
+      app.isAdmin = true;
+      await enterApp();
+    } else {
+      showScreen('screen-login');
+    }
     refreshIcons();
   } catch (err) {
     console.error('[APP] Error init:', err);
@@ -102,6 +126,7 @@ async function setupPin() {
     if (cloud.isAvailable()) await cloud.setConfig('pinHash', hash);
     error.classList.add('hidden');
     app.isAdmin = true;
+    await localDB.setConfig('session', 'admin');
     showToast('PIN configurado', 'success');
     await enterApp();
   } catch (err) {
@@ -116,9 +141,19 @@ async function loginWithPin() {
 
   try {
     var storedHash = await localDB.getConfig('pinHash');
+
+    // Si no hay PIN local, intentar desde Supabase
+    if (!storedHash && cloud.isAvailable()) {
+      try {
+        storedHash = await cloud.getConfig('pinHash');
+        if (storedHash) await localDB.setConfig('pinHash', storedHash);
+      } catch (_) {}
+    }
+
     var inputHash = await hashPin(pin);
     if (inputHash === storedHash) {
       error.classList.add('hidden'); app.isAdmin = true;
+      await localDB.setConfig('session', 'admin');
       showToast('Acceso administrativo', 'success');
       await enterApp();
     } else {
@@ -611,7 +646,7 @@ function setupEventListeners() {
   var syncBtn=document.getElementById('btn-sync');
   if(syncBtn) syncBtn.addEventListener('click', function(){ cloud.isAvailable()?syncToCloud():showToast('Sin conexión o Supabase no configurado','warning'); });
   var logoutBtn=document.getElementById('btn-logout');
-  if(logoutBtn) logoutBtn.addEventListener('click', function(){ app.isAdmin=false; showScreen('screen-login'); });
+  if(logoutBtn) logoutBtn.addEventListener('click', function(){ app.isAdmin=false; localDB.setConfig('session',''); showScreen('screen-login'); });
 }
 
 document.addEventListener('DOMContentLoaded', initApp);
