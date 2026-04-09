@@ -429,3 +429,14 @@ select.field-input {
 ::-webkit-scrollbar-thumb { background: rgba(100,116,139,0.15); border-radius: 3px; }
 @media screen and (max-width: 768px) { input, textarea, select { font-size: 16px !important; } }
 .form-bottom-hint { text-align: center; font-size: 10px; color: #475569; margin-top: 4px; padding-bottom: 8px; }
+
+/* ─── Delete button ─── */
+.btn-delete {
+  width: 100%; padding: 12px; border-radius: 12px;
+  font-weight: 600; font-size: 13px; color: #fca5a5;
+  background: rgba(127,29,29,0.2); border: 1px solid rgba(239,68,68,0.25);
+  transition: all 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.btn-delete:hover { background: rgba(127,29,29,0.4); color: #fecaca; }
+.btn-delete:active { transform: scale(0.98); }
