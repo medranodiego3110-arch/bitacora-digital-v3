@@ -154,6 +154,10 @@ async function loginWithPin() {
     if (inputHash === storedHash) {
       error.classList.add('hidden'); app.isAdmin = true;
       await localDB.setConfig('session', 'admin');
+      // Asegurar que el PIN esté en Supabase
+      if (cloud.isAvailable()) {
+        try { await cloud.setConfig('pinHash', storedHash); } catch(_) {}
+      }
       showToast('Acceso administrativo', 'success');
       await enterApp();
     } else {
