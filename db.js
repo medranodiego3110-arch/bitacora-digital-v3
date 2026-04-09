@@ -16,8 +16,8 @@
 // ⚠️ INSTRUCCIONES: Reemplaza estos valores con los de tu proyecto Supabase
 // Los encuentras en: Supabase Dashboard → Settings → API
 
-const SUPABASE_URL = 'TU_SUPABASE_URL_AQUI';     // Ej: https://abcdefg.supabase.co
-const SUPABASE_ANON_KEY = 'TU_ANON_KEY_AQUI';     // Ej: eyJhbGciOiJIUzI1NiIs...
+const SUPABASE_URL = 'https://bjnyjxdaeqobytzqjevj.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJqbnlqeGRhZXFvYnl0enFqZXZqIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzU2MDM1NjEsImV4cCI6MjA5MTE3OTU2MX0.FPxa6N-oTndsg0YUhaA4MLZT53W2c0FYcGn4p4Z0vmk';
 
 // ═══════════════════════════════════════════════════════════
 
