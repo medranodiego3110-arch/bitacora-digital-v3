@@ -473,6 +473,10 @@ async function openDetail(localId, cloudId) {
   if (!record && cloudId) record = app.records.find(function(r) { return r.cloudId === cloudId; });
   if (!record) return;
 
+  // Guardar referencia para borrar
+  app.detailLocalId = localId;
+  app.detailCloudId = record.cloudId || cloudId;
+
   var mapsUrl = 'https://maps.google.com/?q=' + record.gps.lat + ',' + record.gps.lng;
   var photos = (record.photoUrls && record.photoUrls.length) ? record.photoUrls : (record.photos || []);
   var gallery = document.getElementById('detail-gallery');
@@ -495,7 +499,42 @@ async function openDetail(localId, cloudId) {
   document.getElementById('detail-sync').innerHTML = record.synced
     ? '<span style="color:#6ee7b7">Sincronizado en la nube</span>'
     : '<span style="color:#fcd34d">Guardado localmente</span>';
+  // Mostrar/ocultar botón de eliminar según modo admin
+  document.getElementById('btn-delete-record').classList[app.isAdmin ? 'remove' : 'add']('hidden');
+
   openModal('modal-detail');
+}
+
+async function deleteCurrentRecord() {
+  if (!app.isAdmin) return;
+  if (!confirm('¿Eliminar este registro? Esta acción no se puede deshacer.')) return;
+
+  var btn = document.getElementById('btn-delete-record');
+  btn.disabled = true; btn.textContent = 'Eliminando...';
+
+  try {
+    // Borrar de Supabase
+    if (app.detailCloudId && cloud.isAvailable()) {
+      await cloud.deleteRecord(app.detailCloudId);
+    }
+
+    // Borrar de IndexedDB
+    if (app.detailLocalId) {
+      await localDB.deleteRecord(app.detailLocalId);
+    }
+
+    closeModal('modal-detail');
+    await loadRecords();
+    await updatePendingBadge();
+    showToast('Registro eliminado', 'success');
+  } catch (err) {
+    console.error('[APP] Error eliminando:', err);
+    showToast('Error al eliminar', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<i data-lucide="trash-2" class="icon"></i> Eliminar Registro';
+    refreshIcons();
+  }
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -630,6 +669,7 @@ function setupEventListeners() {
   document.getElementById('btn-new-record').addEventListener('click', openNewRecordForm);
   document.getElementById('btn-take-photo').addEventListener('click', capturePhoto);
   document.getElementById('btn-save-record').addEventListener('click', saveRecord);
+  document.getElementById('btn-delete-record').addEventListener('click', deleteCurrentRecord);
   document.getElementById('field-description').addEventListener('input', validateForm);
   document.getElementById('btn-export-csv').addEventListener('click', exportToCSV);
   document.getElementById('btn-export-pdf').addEventListener('click', exportToPDF);
